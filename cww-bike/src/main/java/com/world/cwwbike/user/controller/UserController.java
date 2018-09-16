@@ -1,17 +1,12 @@
-package com.world.cwwbike.controller;
+package com.world.cwwbike.user.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.core.SerializableString;
 import com.world.cwwbike.common.constants.Constants;
 import com.world.cwwbike.common.exception.MaMaBikeException;
 import com.world.cwwbike.common.resp.ApiResult;
-import com.world.cwwbike.dao.UserMapper;
-import com.world.cwwbike.entity.user.LoginInfo;
-import com.world.cwwbike.entity.user.User;
-import com.world.cwwbike.service.UserService;
-import lombok.extern.java.Log;
+import com.world.cwwbike.user.dao.UserMapper;
+import com.world.cwwbike.user.entity.user.LoginInfo;
+import com.world.cwwbike.user.service.UserService;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;

@@ -1,4 +1,4 @@
-package com.world.cwwbike.service;
+package com.world.cwwbike.user.service;
 
 public interface UserService {
 

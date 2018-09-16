@@ -38,7 +38,7 @@
         <!-- 必须的（1 required） -->
         <!-- java模型生成器 -->
         <!-- targetProject:自动生成代码的位置 -->
-        <javaModelGenerator targetPackage="com.world.cwwbike.entity.user"
+        <javaModelGenerator targetPackage="com.world.cwwbike.user.entity.user"
                             targetProject="D:\Codes\cww-bike\src\main\java"
                              >
             <!-- TODO enableSubPackages:是否让schema作为包的后缀 -->
@@ -49,14 +49,14 @@
 
         <!-- 必须的（1 required） -->
         <!-- map xml 生成器 -->
-        <sqlMapGenerator targetPackage="com.world.cwwbike.dao.xml"
+        <sqlMapGenerator targetPackage="com.world.cwwbike.user.dao.xml"
                          targetProject="D:\Codes\cww-bike\src\main\java">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
         <!-- 可选的（0 or 1） -->
         <!-- mapper 或者就是dao接口生成器 -->
-        <javaClientGenerator targetPackage="com.world.cwwbike.dao.mapper"
+        <javaClientGenerator targetPackage="com.world.cwwbike.user.dao.mapper"
                              targetProject="D:\Codes\cww-bike\src\main\java"
                              type="XMLMAPPER">
             <property name="enableSubPackages" value="true" />

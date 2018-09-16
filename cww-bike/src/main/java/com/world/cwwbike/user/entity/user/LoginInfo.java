@@ -1,4 +1,4 @@
-package com.world.cwwbike.entity.user;
+package com.world.cwwbike.user.entity.user;
 
 import lombok.Data;
 
