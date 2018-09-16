@@ -2,5 +2,5 @@ package com.world.cwwbike.service;
 
 public interface UserService {
 
-    String login();
+    String login(String data, String key);
 }
