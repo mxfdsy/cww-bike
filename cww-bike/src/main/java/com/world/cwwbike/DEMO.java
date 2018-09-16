@@ -13,8 +13,8 @@ public class DEMO {
 
         //AES加密数据
         System.out.println("AES开始加密数据");
-        String key = "1111111111111111";
-        String datatoEn = "你好世界";
+        String key = "123456789abcdfgt";
+        String datatoEn = "{\"mobile\":15068547187,\"code\":6666,\"platform\":\"android\"}";
         String encrypt = AESUtil.encrypt(datatoEn, key);
         System.out.println("你好世界被加密的密文："+ encrypt);
         //RSA加密 AES的密玥 （key）
