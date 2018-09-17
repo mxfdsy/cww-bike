@@ -77,8 +77,6 @@ public class UserServiceImpl implements UserService {
             ue.setPlatform(platform);
             ue.setPushChannelId(channelId);
             cacheUtil.putTokenWhenLogin(ue);
-
-
         } catch (Exception e) {
             log.error("Fail to decrypt data", e);
             throw new MaMaBikeException("数据解析错误");

@@ -28,7 +28,7 @@ public class JedisPoolWrapper {
 			config.setMaxIdle(parameters.getRedisMaxIdle());
 			config.setMaxWaitMillis(parameters.getRedisMaxWaitMillis());
 
-			jedisPool = new JedisPool(config,parameters.getRedisHost(),parameters.getRedisPort(),2000,"");
+			jedisPool = new JedisPool(config,parameters.getRedisHost(),parameters.getRedisPort(),20);
 		} catch (Exception e) {
 			log.error("Fail to initialize jedis pool", e);
 			throw new MaMaBikeException("Fail to initialize jedis pool");
