@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.world.cwwbike.cache.CommonCacheUtil;
 import com.world.cwwbike.common.exception.MaMaBikeException;
+import com.world.cwwbike.common.resp.ApiResult;
 import com.world.cwwbike.security.AESUtil;
 import com.world.cwwbike.security.Base64Util;
 import com.world.cwwbike.security.MD5Util;
@@ -15,6 +16,7 @@ import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("userServiceImpl")
 @Log4j
@@ -89,6 +91,12 @@ public class UserServiceImpl implements UserService {
             throws Exception {
         String source = user.getId() + ":" + user.getMobile() +  ":"+ System.currentTimeMillis();
         return MD5Util.getMD5(source);
+    }
+
+    @Transactional
+    @Override
+    public void modifyNickName(User user) throws MaMaBikeException {
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
 
