@@ -4,6 +4,8 @@ package com.world.cwwbike.common;
 import com.world.cwwbike.cache.CommonCacheUtil;
 import com.world.cwwbike.common.constants.Constants;
 import com.world.cwwbike.user.entity.user.UserElement;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by JackWangon[www.coder520.com] 2017/8/4.
  */
+@Log4j
 public class BaseController  {
 
     @Autowired
@@ -28,6 +31,7 @@ public class BaseController  {
                 UserElement ue = cacheUtil.getUserByToken(token);
                 return ue;
             } catch (Exception e) {
+                log.error("fail to get ue", e);
                 return null;
             }
         }
