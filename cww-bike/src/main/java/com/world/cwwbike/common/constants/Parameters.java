@@ -14,8 +14,8 @@ import java.util.List;
 @Data
 public class Parameters {
 
-//    @Value("#{'${security.noneSecurityPath}'.split(',')}")
-//    private  List<String> noneSecurityPath;
+    @Value("#{'${security.noneSecurityPath}'.split(',')}")
+    private  List<String> noneSecurityPath;
 
     /*****redis config start*******/
     @Value("${spring.redis.host}")

@@ -1,9 +1,11 @@
 package com.world.cwwbike.security;
 
 
+import com.world.cwwbike.cache.CommonCacheUtil;
 import com.world.cwwbike.common.constants.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +18,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    Parameters parameters;
+
+    @Autowired
+    CommonCacheUtil commonCacheUtil;
 
 
     /**
@@ -36,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     private RestPreAuthenticatedProcessingFilter getPreAuthenticatedProcessingFilter() throws Exception {
-        RestPreAuthenticatedProcessingFilter filter = new RestPreAuthenticatedProcessingFilter();
+        RestPreAuthenticatedProcessingFilter filter = new RestPreAuthenticatedProcessingFilter(parameters.getNoneSecurityPath(), commonCacheUtil);
         filter.setAuthenticationManager(this.authenticationManagerBean());
         return filter;
     }
@@ -44,17 +52,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
+        //忽略options的方法
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
-    @Autowired
-    private Parameters parameters;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**/login").permitAll()
+                .antMatchers(parameters.getNoneSecurityPath().toArray(new String[parameters.getNoneSecurityPath().size()])).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
