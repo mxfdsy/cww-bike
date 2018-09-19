@@ -27,7 +27,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
-     * 配置 manage
+     * csrf()的跨站脚本攻击，相当于伪造表单，这里我们用不到
+     * @param http
+     * @throws Exception
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers(parameters.getNoneSecurityPath().toArray(new String[parameters.getNoneSecurityPath().size()])).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//设置无状态的session
+                .and().httpBasic().authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and().addFilter(getPreAuthenticatedProcessingFilter());
+    }
+
+
+    /**
+     *  manage 添加 provioder
      *
      * @param auth
      * @throws Exception
@@ -57,15 +75,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers(parameters.getNoneSecurityPath().toArray(new String[parameters.getNoneSecurityPath().size()])).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().httpBasic().authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                .and().addFilter(getPreAuthenticatedProcessingFilter());//设置无状态的session
-    }
+
 }
