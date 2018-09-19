@@ -20,13 +20,13 @@ public class Constants {
     /**自定义状态码 end**/
 
     /**秒滴SMS start**/
-    public static final String MDSMS_ACCOUNT_SID = "";
+    public static final String MDSMS_ACCOUNT_SID = "46bc7f418588405189ef6414d15c4551";
 
-    public static final String MDSMS_AUTH_TOKEN = "";
+    public static final String MDSMS_AUTH_TOKEN = "692cd34097864b31807953b3c6b67ca5";
 
     public static final String MDSMS_REST_URL = "https://api.miaodiyun.com/20150822";
 
-    public static final String MDSMS_VERCODE_TPLID = "57674914";
+    public static final String MDSMS_VERCODE_TPLID = "660829978";
 
     /**秒滴SMS end**/
 
