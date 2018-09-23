@@ -10,6 +10,7 @@ import com.world.cwwbike.user.entity.user.User;
 import com.world.cwwbike.user.entity.user.UserElement;
 import com.world.cwwbike.user.service.UserService;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
@@ -80,6 +83,26 @@ public class UserController extends BaseController {
             resp.setMessage("内部错误");
         }
 
+        return resp;
+    }
+
+    @RequestMapping("/sendVercode")
+    public ApiResult sendVercode(@RequestBody User user, HttpServletRequest request){
+        ApiResult<String> resp = new ApiResult<>();
+        try {
+            if(StringUtils.isEmpty(user.getMobile())){
+                throw new MaMaBikeException("手机号码不能为空");
+            }
+            userService.sendVercode(user.getMobile(),getIpFromRequest(request));
+            resp.setMessage("发送成功");
+        } catch (MaMaBikeException e) {
+            resp.setCode(e.getStatusCode());
+            resp.setMessage(e.getMessage());
+        } catch (Exception e) {
+            log.error("Fail to update user info", e);
+            resp.setCode(Constants.RESP_STATUS_INTERNAL_ERROR);
+            resp.setMessage("内部错误");
+        }
         return resp;
     }
 

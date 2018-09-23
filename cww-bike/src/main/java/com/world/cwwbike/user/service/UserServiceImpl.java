@@ -3,8 +3,10 @@ package com.world.cwwbike.user.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.world.cwwbike.cache.CommonCacheUtil;
+import com.world.cwwbike.common.constants.Constants;
 import com.world.cwwbike.common.exception.MaMaBikeException;
-import com.world.cwwbike.common.resp.ApiResult;
+import com.world.cwwbike.common.jms.SmsProcessor;
+import com.world.cwwbike.common.utils.RandomNumberCode;
 import com.world.cwwbike.security.AESUtil;
 import com.world.cwwbike.security.Base64Util;
 import com.world.cwwbike.security.MD5Util;
@@ -13,10 +15,16 @@ import com.world.cwwbike.user.dao.UserMapper;
 import com.world.cwwbike.user.entity.user.User;
 import com.world.cwwbike.user.entity.user.UserElement;
 import lombok.extern.log4j.Log4j;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.jms.Destination;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service("userServiceImpl")
 @Log4j
@@ -25,7 +33,15 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Autowired
+    private SmsProcessor smsProcessor;
+
+
+    @Autowired
     private CommonCacheUtil cacheUtil;
+
+    private static final String VERIFYCODE_PREFIX = "verify.code.";
+
+    private static final String SMS_QUEUE = "sms.queue";
 
     @Override
     public String login(String data, String key) throws MaMaBikeException {
@@ -98,6 +114,29 @@ public class UserServiceImpl implements UserService {
     public void modifyNickName(User user) throws MaMaBikeException {
         userMapper.updateByPrimaryKeySelective(user);
     }
+
+    @Override
+    public void sendVercode(String mobile, String ip) throws MaMaBikeException {
+        String verCode = RandomNumberCode.verCode();
+//        int result = cacheUtil.cacheForVerificationCode(VERIFYCODE_PREFIX+mobile,verCode,"reg",60,ip);
+//        if (result == 1) {
+//            throw new MaMaBikeException("当前验证码未过期，请稍后重试");
+//        } else if (result == 2) {
+//            throw new MaMaBikeException("超过当日验证码次数上限");
+//        } else if (result == 3) {
+//            throw new MaMaBikeException(ip + "超过当日验证码次数上限");
+//        }
+
+        Destination destination = new ActiveMQQueue(SMS_QUEUE);
+        Map<String,String> smsParam = new HashMap<>();
+        smsParam.put("mobile",mobile);
+        smsParam.put("tplId", Constants.MDSMS_VERCODE_TPLID);
+        smsParam.put("vercode",verCode);
+        String message = JSON.toJSONString(smsParam);
+        smsProcessor.sendSmsToQueue(destination,message);
+
+    }
+
 
 
 }

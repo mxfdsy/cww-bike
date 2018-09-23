@@ -46,6 +46,8 @@ public class BaseController  {
         if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)){
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
+
+        //若直接获取    ip = request.getRemoteAddr(); 可能会拿到转发节点的iP 所以
         if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)){
             ip = request.getRemoteAddr();
         }
